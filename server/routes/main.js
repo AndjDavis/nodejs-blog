@@ -20,4 +20,12 @@ router.get("/about", (req, res) => {
 	res.render("about", { locals });
 });
 
+router.get("/contact", (req, res) => {
+    const locals = {
+        title: "Contact",
+        description: "Contact the company"
+    }
+    res.render("contact", { locals })
+})
+
 module.exports = router;
