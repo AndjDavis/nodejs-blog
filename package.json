@@ -1,0 +1,19 @@
+{
+  "name": "node-blog",
+  "version": "1.0.0",
+  "description": "An tutorial to learn more about node.js and its frameworks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/AndjDavis/nodejs-blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndjDavis/nodejs-blog/issues"
+  },
+  "homepage": "https://github.com/AndjDavis/nodejs-blog#readme"
+}
