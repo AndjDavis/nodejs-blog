@@ -26,6 +26,7 @@ app.use(logger);
 
 // use as homepage
 app.use("/", require("./server/routes/main"));
+app.use("/admin", require("./server/routes/admin"));
 
 app.locals.title = "NodeJS Blog";
 app.locals.description = "Simple blog created with NodeJS, Express, & MongoDB";

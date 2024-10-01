@@ -1,9 +1,9 @@
 const express = require("express");
-const Post = require("../models/post");
+const Post = require("../models/Post");
 const router = express.Router(); // create a new instance of an Express Router object.
 
 // GET / Home
-router.get("", async (req, res) => {
+router.get("/", async (req, res) => {
 	try {
 		let perPage = 10;
 		let page = req.query.page || 1;
