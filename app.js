@@ -2,9 +2,8 @@ require("dotenv").config();
 
 const express = require("express");
 const expressLayout = require("express-ejs-layouts");
-
-const connectDB = require('./server/config/db');
-
+const connectDB = require("./server/config/db");
+const logger = require("./server/middleware");
 
 // create the express application
 const app = express();
@@ -20,7 +19,8 @@ app.use(expressLayout);
 app.set("layout", "./layouts/main");
 app.set("view engine", "ejs");
 
-
+// Middleware
+app.use(logger);
 
 // use as homepage
 app.use("/", require("./server/routes/main"));
