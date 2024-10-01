@@ -44,6 +44,7 @@ app.use(logger);
 // Routes
 app.use("/", require("./server/routes/main"));
 app.use("/admin", require("./server/routes/admin"));
+app.use("/posts", require("./server/routes/posts"));
 
 // Default locals values
 app.locals.title = "NodeJS Blog";

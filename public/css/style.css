@@ -343,13 +343,6 @@ img {
 	flex-grow: 1
 }
 
-/* Search Results */
-.search__results_empty {
-	text-align: center;
-	font-weight:500;
-	font-size: var(--font-size-md);
-}
-
 .pagination {
 	font-size: 1.3rem;
 	color: var(--gray);
@@ -360,4 +353,11 @@ img {
 
 .pagination:hover {
 	color: var(--black);
+}
+
+/* Empty List */
+.empty_list {
+	text-align: center;
+	font-weight:500;
+	font-size: var(--font-size-md);
 }
