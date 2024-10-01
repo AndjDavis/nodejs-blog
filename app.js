@@ -27,6 +27,9 @@ app.use(logger);
 // use as homepage
 app.use("/", require("./server/routes/main"));
 
+app.locals.title = "NodeJS Blog";
+app.locals.description = "Simple blog created with NodeJS, Express, & MongoDB";
+
 // Listen on PORT
 app.listen(PORT, () => {
 	console.log(`App listening on port ${PORT}`);

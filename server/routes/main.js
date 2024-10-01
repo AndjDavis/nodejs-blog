@@ -5,10 +5,6 @@ const router = express.Router(); // create a new instance of an Express Router o
 // GET / Home
 router.get("", async (req, res) => {
 	try {
-		const locals = {
-			title: "NodeJS Blog",
-			description: "Simple blog created with NodeJS, Express, & MongoDB",
-		};
 		let perPage = 10;
 		let page = req.query.page || 1;
 		const skipAmount = perPage * page - perPage;
@@ -24,7 +20,6 @@ router.get("", async (req, res) => {
 		const nextPageDisplay = hasNextPage ? nextPage : null;
 
 		res.render("index", {
-			locals,
 			data,
 			current: page,
 			nextPage: nextPageDisplay,
@@ -75,9 +70,8 @@ router.post("/search", async (req, res) => {
 
 		const locals = {
 			title: "Search Results",
-			description: "Searching Posts",
 		};
-		res.render("search", { data, locals });
+		res.render("search-results", { data, locals });
 	} catch (error) {
 		console.log("Searching Error: ", err);
 	}
@@ -86,7 +80,6 @@ router.post("/search", async (req, res) => {
 router.get("/about", (req, res) => {
 	const locals = {
 		title: "About",
-		description: "About the NodeJS Blog",
 	};
 	res.render("about", { locals });
 });
@@ -94,7 +87,6 @@ router.get("/about", (req, res) => {
 router.get("/contact", (req, res) => {
 	const locals = {
 		title: "Contact",
-		description: "Contact the company",
 	};
 	res.render("contact", { locals });
 });
