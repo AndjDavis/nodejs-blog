@@ -49,6 +49,7 @@ router.get("", async (req, res) => {
 // 	}
 // });
 
+// GET / POSTS/_id
 router.get("/posts/:id", async (req, res) => {
 	try {
 		const slug = req.params.id;
@@ -60,6 +61,25 @@ router.get("/posts/:id", async (req, res) => {
 		res.render("post", { locals, data });
 	} catch (error) {
 		console.log("Database Error: ", err);
+	}
+});
+
+// POST / SEARCH
+router.post("/search", async (req, res) => {
+	try {
+		const searchTerm = req.body?.searchTerm || "";
+		const cleanedSearchTerm = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
+		const data = await Post.find({
+			$text: { $search: cleanedSearchTerm },
+		});
+
+		const locals = {
+			title: "Search Results",
+			description: "Searching Posts",
+		};
+		res.render("search", { data, locals });
+	} catch (error) {
+		console.log("Searching Error: ", err);
 	}
 });
 

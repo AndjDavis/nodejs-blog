@@ -20,4 +20,6 @@ const PostSchema = new Schema({
 	},
 });
 
+PostSchema.index({ title: "text", body: "text" });
+
 module.exports = mongoose.model("Post", PostSchema);
