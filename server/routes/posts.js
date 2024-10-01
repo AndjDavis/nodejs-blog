@@ -25,15 +25,30 @@ router.get("/post/:id", async (req, res) => {
 
 // GET / add-post
 router.get("/add-post", authMiddleware, async (req, res) => {
-    const locals = {
-        title: "Add Post"
-    }
+	const locals = {
+		title: "Add Post",
+	};
 
-    try {
-        res.render("admin/add-post", { layout: adminLayout })
-    } catch (error) {
-        console.error("Add Post Error", error)
-    }
-})
+	try {
+		res.render("admin/add-post", { locals, layout: adminLayout });
+	} catch (error) {
+		console.error("Add Post Error", error);
+	}
+});
+
+// POST / add-post
+router.post("/add-post", authMiddleware, async (req, res) => {
+	try {
+		const { title, body } = req.body;
+		const newPost = new Post({
+			title,
+			body,
+		});
+		await Post.create(newPost);
+		res.redirect("/admin/dashboard");
+	} catch (error) {
+		console.error("Add New Post Error", error);
+	}
+});
 
 module.exports = router;
