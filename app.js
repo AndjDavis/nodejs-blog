@@ -7,7 +7,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 const connectDB = require("./server/config/db");
-const logger = require("./server/middleware");
+const { logger } = require("./server/middleware");
 
 // Create the express application
 const app = express();
