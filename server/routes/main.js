@@ -1,5 +1,6 @@
 const express = require("express");
 const Post = require("../models/Post");
+
 const router = express.Router(); // create a new instance of an Express Router object.
 
 // GET / Home
