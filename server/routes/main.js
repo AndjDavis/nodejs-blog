@@ -46,19 +46,19 @@ router.get("/", async (req, res) => {
 // });
 
 // GET / POSTS/_id
-router.get("/posts/:id", async (req, res) => {
-	try {
-		const slug = req.params.id;
-		const data = await Post.findById({ _id: slug });
-		const locals = {
-			title: data.title,
-			description: "Blog Post Details",
-		};
-		res.render("post", { locals, data });
-	} catch (error) {
-		console.log("Database Error: ", err);
-	}
-});
+// router.get("/posts/:id", async (req, res) => {
+// 	try {
+// 		const slug = req.params.id;
+// 		const data = await Post.findById({ _id: slug });
+// 		const locals = {
+// 			title: data.title,
+// 			description: "Blog Post Details",
+// 		};
+// 		res.render("post", { locals, data });
+// 	} catch (error) {
+// 		console.log("Database Error: ", err);
+// 	}
+// });
 
 // POST / SEARCH
 router.post("/search", async (req, res) => {

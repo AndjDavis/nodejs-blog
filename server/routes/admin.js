@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const Post = require("../models/Post");
 const User = require("../models/User");
-const { authMiddleWare } = require("../middleware");
+const { authMiddleware } = require("../middleware");
 
 const adminLayout = "../views/layouts/admin";
 const jwtSecret = process.env.JWT_SECRET;
@@ -89,13 +89,14 @@ router.post("/register", async (req, res) => {
 	}
 });
 
-router.get("/dashboard", (req, res) => {
+// GET / Dashboard
+router.get("/dashboard", authMiddleware, async (req, res) => {
 	try {
 		const locals = {
-			title: "Nodejs Blog Dashboard",
+			title: "Dashboard",
 		};
-		const data = [];
-		res.render("admin/dashboard", { locals, layout: adminLayout, data });
+		const data = await Post.find();
+		res.render("admin/dashboard", { locals, data, layout: adminLayout });
 	} catch (error) {
 		console.error("Dashboard Error: ", error);
 	}
