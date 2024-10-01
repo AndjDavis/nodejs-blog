@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	const searchInput = document.getElementById("searchInput");
 	const searchClose = document.getElementById("searchClose");
 
+	if (!searchButton || !searchClose) return;
+
 	searchButton.addEventListener("click", function () {
 		searchBar.style.visibility = "visible";
 		searchBar.classList.add("open");
