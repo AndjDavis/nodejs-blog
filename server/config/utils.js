@@ -11,5 +11,9 @@ const getBackRoute = (referer) => {
 	return isAdmin ? "/admin/dashboard" : "/";
 };
 
+const isActiveRoute = (route, currentRoute) =>
+	route === currentRoute ? "active" : "";
+
 module.exports.getLayout = getLayout;
 module.exports.getBackRoute = getBackRoute;
+module.exports.isActiveRoute = isActiveRoute;
