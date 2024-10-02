@@ -17,9 +17,9 @@ router.get("/detail/:id", async (req, res) => {
 			description: "Blog Post Details",
 		};
 
-        const referer = req?.headers?.referer || null;
-        const backRoute = utils.getBackRoute(referer);
-        const layout = utils.getLayout(referer);
+		const referer = req?.headers?.referer || null;
+		const backRoute = utils.getBackRoute(referer);
+		const layout = utils.getLayout(referer);
 
 		res.render("post-detail", { locals, data, backRoute, layout: layout });
 	} catch (error) {
@@ -73,7 +73,7 @@ router.get(
 				data,
 			});
 		} catch (error) {
-			console.error("Edit Post Error: ", error);
+			console.error("View Edit Post Error: ", error);
 		}
 	}
 );
@@ -81,17 +81,33 @@ router.get(
 // PUT / edit-post
 router.put("/edit-post/:id", authMiddleware, async (req, res) => {
 	try {
-		const post_id = req.params.id;
+		const postId = req.params.id;
 		const { title, body } = req.body;
-		await Post.findByIdAndUpdate(post_id, {
+		await Post.findByIdAndUpdate(postId, {
 			title,
 			body,
 			updatedAt: Date.now(),
 		});
-		res.redirect(`posts/edit-post/${req.params.id}`);
+		res.redirect(`posts/edit-post/${postId}`);
 	} catch (error) {
-		console.error("Add New Post Error", error);
+		console.error("Editing Post Error", error);
 	}
 });
+
+// DELETE / delete-post
+router.delete(
+	"/delete-post/:id",
+	authMiddleware,
+	setAdminLayout,
+	async (req, res) => {
+		try {
+			const postId = req.params.id;
+			await Post.deleteOne({ _id: postId });
+			res.redirect("/admin/dashboard");
+		} catch (error) {
+			console.error("Delete Post Error: ", error);
+		}
+	}
+);
 
 module.exports = router;
