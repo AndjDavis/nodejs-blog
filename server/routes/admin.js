@@ -4,9 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const Post = require("../models/Post");
 const User = require("../models/User");
-const { authMiddleware } = require("../middleware");
+const { authMiddleware, setAdminLayout } = require("../middleware");
 
-const adminLayout = "../views/layouts/admin";
 const jwtSecret = process.env.JWT_SECRET;
 
 const router = express.Router();
@@ -14,18 +13,18 @@ const router = express.Router();
 const createTokenSetCookie = (req, res, userId) => {
 	const token = jwt.sign({ userId: userId }, jwtSecret);
 	res.cookie("token", token, { httpOnly: true });
-	res.redirect("admin/dashboard");
+	res.redirect("/admin/dashboard");
 };
 
 // GET / Admin
-router.get("/", (req, res) => {
+router.get("/", setAdminLayout, (req, res) => {
 	try {
 		const locals = {
 			title: "Admin",
 			description: "Login",
 		};
 
-		res.render("admin/index", { locals, layout: adminLayout });
+		res.render("admin/index", { locals });
 	} catch (err) {
 		console.error("Admin Error: ", err);
 	}
@@ -46,21 +45,18 @@ router.post("/", async (req, res) => {
 		}
 
 		createTokenSetCookie(req, res, user._id);
-		// const token = jwt.sign({ userId: user._id }, jwtSecret);
-		// res.cookie("token", token, { httpOnly: true });
-		// res.redirect("admin/dashboard");
 	} catch (err) {
 		console.error("Login Error: ", err);
 	}
 });
 
 // GET / Register
-router.get("/register", (req, res) => {
+router.get("/register", setAdminLayout, (req, res) => {
 	try {
 		const locals = {
 			title: "Register",
 		};
-		res.render("admin/register", { locals, layout: adminLayout });
+		res.render("admin/register", { locals });
 	} catch (error) {
 		console.error("Registration Error: ", error);
 	}
@@ -74,7 +70,6 @@ router.post("/register", async (req, res) => {
 
 		try {
 			const user = await User.create({ username, password: hashedPassword });
-			// res.status(201).json({ message: "User Created", user });
 			createTokenSetCookie(req, res, user._id);
 		} catch (error) {
 			if (error.code === 11000) {
@@ -90,13 +85,13 @@ router.post("/register", async (req, res) => {
 });
 
 // GET / Dashboard
-router.get("/dashboard", authMiddleware, async (req, res) => {
+router.get("/dashboard", authMiddleware, setAdminLayout, async (req, res) => {
 	try {
 		const locals = {
 			title: "Dashboard",
 		};
 		const data = await Post.find();
-		res.render("admin/dashboard", { locals, data, layout: adminLayout });
+		res.render("admin/dashboard", { locals, data });
 	} catch (error) {
 		console.error("Dashboard Error: ", error);
 	}

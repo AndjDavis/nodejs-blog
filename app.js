@@ -8,6 +8,7 @@ const MongoStore = require("connect-mongo");
 
 const connectDB = require("./server/config/db");
 const { logger } = require("./server/middleware");
+const { mainLayout } = require("./server/config/constants");
 
 // Create the express application
 const app = express();
@@ -20,9 +21,9 @@ connectDB();
 app.use(express.static("public"));
 
 // Templating Engine
-app.use(expressLayout);
-app.set("layout", "./layouts/main");
 app.set("view engine", "ejs");
+app.use(expressLayout);
+app.set("layout", mainLayout);
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
