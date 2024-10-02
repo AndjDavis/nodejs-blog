@@ -9,7 +9,7 @@ const router = express.Router();
 const adminLayout = "../views/layouts/admin";
 
 // GET / Post Detail
-router.get("/post/:id", async (req, res) => {
+router.get("/detail/:id", async (req, res) => {
 	try {
 		const slug = req.params.id;
 		const data = await Post.findById({ _id: slug });
@@ -17,7 +17,12 @@ router.get("/post/:id", async (req, res) => {
 			title: data.title,
 			description: "Blog Post Details",
 		};
-		res.render("post", { locals, data });
+
+        const referer = req?.headers?.referer || null;
+        const backRoute = utils.getBackRoute(referer);
+        const layout = utils.getLayout(referer);
+
+		res.render("post-detail", { locals, data, backRoute, layout: layout });
 	} catch (error) {
 		console.error("Post Details Error: ", error);
 	}

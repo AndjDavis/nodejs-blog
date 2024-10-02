@@ -11,7 +11,7 @@
 <ul class="admin-posts">
 	<% data.forEach(post => { %>
 	<li>
-		<a href="/posts/post/<%= post._id %>"> <%= post.title %> &nearr; </a>
+		<a href="/posts/detail/<%= post._id %>"> <%= post.title %> &nearr; </a>
 		<div class="admin-post-controls">
 			<a
 				href="/posts/edit-post/<%= post._id %>"

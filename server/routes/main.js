@@ -74,7 +74,7 @@ router.post("/search", async (req, res) => {
 		};
 		res.render("search-results", { data, locals });
 	} catch (error) {
-		console.log("Searching Error: ", err);
+		console.error("Searching Error: ", err);
 	}
 });
 
