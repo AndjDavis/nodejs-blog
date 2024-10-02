@@ -6,13 +6,14 @@ const User = require("../models/User");
 const {
 	authMiddleware,
 	generateJwtAndSetCookie,
+	redirectIfLoggedIn,
 	setAdminLocals,
 } = require("../middleware");
 
 const router = express.Router();
 
 // GET / Admin
-router.get("/", setAdminLocals, (req, res) => {
+router.get("/", redirectIfLoggedIn, setAdminLocals, (req, res) => {
 	try {
 		res.render("admin/index");
 	} catch (err) {
@@ -23,6 +24,7 @@ router.get("/", setAdminLocals, (req, res) => {
 // POST / Admin - Login
 router.post(
 	"/login",
+	redirectIfLoggedIn,
 	async (req, res, next) => {
 		try {
 			const { username, password } = req.body;
@@ -46,7 +48,7 @@ router.post(
 );
 
 // GET / Register
-router.get("/register", setAdminLocals, (req, res) => {
+router.get("/register", redirectIfLoggedIn, setAdminLocals, (req, res) => {
 	try {
 		res.render("admin/register");
 	} catch (error) {
@@ -57,6 +59,7 @@ router.get("/register", setAdminLocals, (req, res) => {
 // POST / Register
 router.post(
 	"/register",
+	redirectIfLoggedIn,
 	async (req, res, next) => {
 		try {
 			const { username, password } = req.body;
@@ -81,8 +84,10 @@ router.post(
 	generateJwtAndSetCookie
 );
 
+router.use(authMiddleware);
+
 // GET / Dashboard
-router.get("/dashboard", authMiddleware, setAdminLocals, async (req, res) => {
+router.get("/dashboard", setAdminLocals, async (req, res) => {
 	try {
 		const data = await Post.find();
 		res.render("admin/dashboard", { data });

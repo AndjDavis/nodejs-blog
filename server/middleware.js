@@ -35,9 +35,15 @@ const logger = (req, res, next) => {
 	}
 };
 
+const redirectIfLoggedIn = (req, res, next) => {
+	if (!req?.session?.userId) next();
+	return res.redirect("/admin/dashboard");
+};
+
 const setAdminLocals = (req, res, next) => {
 	res.locals.layout = constants.adminLayout;
-	res.locals.title = constants.localsTitleMap[req.path] || "Admin"
+	const path = req?.route?.path || req?.path;
+	res.locals.title = constants.localsTitleMap[path] || "Admin";
 	next();
 };
 
@@ -45,5 +51,6 @@ module.exports = {
 	authMiddleware,
 	generateJwtAndSetCookie,
 	logger,
+	redirectIfLoggedIn,
 	setAdminLocals,
 };

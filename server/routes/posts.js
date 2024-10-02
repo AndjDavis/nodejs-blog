@@ -26,8 +26,10 @@ router.get("/detail/:id", async (req, res) => {
 	}
 });
 
+router.use(authMiddleware);
+
 // GET / add-post
-router.get("/add-post", authMiddleware, setAdminLocals, async (req, res) => {
+router.get("/add-post", setAdminLocals, async (req, res) => {
 	try {
 		res.render("admin/add-post");
 	} catch (error) {
@@ -36,7 +38,7 @@ router.get("/add-post", authMiddleware, setAdminLocals, async (req, res) => {
 });
 
 // POST / add-post
-router.post("/add-post", authMiddleware, async (req, res) => {
+router.post("/add-post", async (req, res) => {
 	try {
 		const { title, body } = req.body;
 		const newPost = new Post({
@@ -51,24 +53,19 @@ router.post("/add-post", authMiddleware, async (req, res) => {
 });
 
 // GET / edit-post
-router.get(
-	"/edit-post/:id",
-	authMiddleware,
-	setAdminLocals,
-	async (req, res) => {
-		try {
-			const data = await Post.findOne({ _id: req.params.id });
-			res.render("admin/edit-post", {
-				data,
-			});
-		} catch (error) {
-			console.error("View Edit Post Error: ", error);
-		}
+router.get("/edit-post/:id", setAdminLocals, async (req, res) => {
+	try {
+		const data = await Post.findOne({ _id: req.params.id });
+		res.render("admin/edit-post", {
+			data,
+		});
+	} catch (error) {
+		console.error("View Edit Post Error: ", error);
 	}
-);
+});
 
 // PUT / edit-post
-router.put("/edit-post/:id", authMiddleware, async (req, res) => {
+router.put("/edit-post/:id", async (req, res) => {
 	try {
 		const postId = req.params.id;
 		const { title, body } = req.body;
