@@ -23,7 +23,8 @@
 	<body>
 		<!-- Add content for all our pages -->
 		<div class="container">
-			<%- include('../partials/header_admin.ejs') %>
+			<%- include('../partials/header.ejs', { isLoggedIn: locals.isLoggedIn })
+			%>
 			<main class="main"><%- body %></main>
 			<%- include('../partials/footer.ejs') %>
 		</div>

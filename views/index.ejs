@@ -9,7 +9,7 @@
     <h2 class="articles__heading">Latest Posts</h2>
 
     <ul class="article-ul">
-        <% data.forEach(post => { %>
+        <% posts.forEach(post => { %>
         <li>
             <a href="/posts/detail/<%= post._id %>">
                 <span><%= post.title %></span>
