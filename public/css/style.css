@@ -5,6 +5,8 @@
 	--gray: #7e7e7e;
 	--gray-light: #e4e4e4;
 	--red: #b30000;
+	--background: #faf5ee;
+	--admin-background: #f0ebe3;
 	--font-size-base: 1rem;
 	--font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.58rem);
 	--font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.11rem);
@@ -17,7 +19,7 @@ body {
 	font-family: "Poppins", sans-serif;
 	color: var(--black);
 	font-size: var(--font-size-base);
-	background-color: #faf5ee;
+	background-color: var(--background);
 	background-image: url("/img/img-noise-361x370.png");
 	margin: 0;
 }
@@ -162,6 +164,10 @@ img {
 	gap: 1rem;
 	font-weight: 600;
 	padding: 0;
+}
+
+.header__nav ul .nav_item {
+	background-color: var(--admin-background);
 }
 
 .header__nav ul a {
