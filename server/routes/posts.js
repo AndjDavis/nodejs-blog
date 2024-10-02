@@ -2,11 +2,10 @@ const express = require("express");
 
 const Post = require("../models/Post");
 const User = require("../models/User");
-const { authMiddleware } = require("../middleware");
+const { authMiddleware, setAdminLayout } = require("../middleware");
+const utils = require("../config/utils");
 
 const router = express.Router();
-
-const adminLayout = "../views/layouts/admin";
 
 // GET / Post Detail
 router.get("/detail/:id", async (req, res) => {
@@ -29,13 +28,13 @@ router.get("/detail/:id", async (req, res) => {
 });
 
 // GET / add-post
-router.get("/add-post", authMiddleware, async (req, res) => {
+router.get("/add-post", authMiddleware, setAdminLayout, async (req, res) => {
 	const locals = {
 		title: "Add Post",
 	};
 
 	try {
-		res.render("admin/add-post", { locals, layout: adminLayout });
+		res.render("admin/add-post", { locals });
 	} catch (error) {
 		console.error("Add Post Error", error);
 	}
@@ -51,6 +50,45 @@ router.post("/add-post", authMiddleware, async (req, res) => {
 		});
 		await Post.create(newPost);
 		res.redirect("/admin/dashboard");
+	} catch (error) {
+		console.error("Add New Post Error", error);
+	}
+});
+
+// GET / edit-post
+router.get(
+	"/edit-post/:id",
+	authMiddleware,
+	setAdminLayout,
+	async (req, res) => {
+		try {
+			const locals = {
+				title: "Edit Post",
+			};
+
+			const data = await Post.findOne({ _id: req.params.id });
+
+			res.render("admin/edit-post", {
+				locals,
+				data,
+			});
+		} catch (error) {
+			console.error("Edit Post Error: ", error);
+		}
+	}
+);
+
+// PUT / edit-post
+router.put("/edit-post/:id", authMiddleware, async (req, res) => {
+	try {
+		const post_id = req.params.id;
+		const { title, body } = req.body;
+		await Post.findByIdAndUpdate(post_id, {
+			title,
+			body,
+			updatedAt: Date.now(),
+		});
+		res.redirect(`posts/edit-post/${req.params.id}`);
 	} catch (error) {
 		console.error("Add New Post Error", error);
 	}
