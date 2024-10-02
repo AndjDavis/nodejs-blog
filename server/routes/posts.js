@@ -88,7 +88,7 @@ router.put("/edit-post/:id", authMiddleware, async (req, res) => {
 			body,
 			updatedAt: Date.now(),
 		});
-		res.redirect(`posts/edit-post/${postId}`);
+		res.redirect(`/posts/edit-post/${postId}`);
 	} catch (error) {
 		console.error("Editing Post Error", error);
 	}
