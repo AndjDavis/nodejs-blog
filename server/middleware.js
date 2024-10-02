@@ -3,19 +3,19 @@ const constants = require("./config/constants");
 
 const jwtSecret = process.env.JWT_SECRET;
 
+const generateJwtAndSetCookie = (req, res, next) => {
+	req.session.userId = req.userId;
+	const token = jwt.sign({ userId: req.userId }, jwtSecret);
+	res.cookie("token", token, { httpOnly: true });
+	res.redirect("/admin/dashboard");
+};
+
 const authMiddleware = (req, res, next) => {
-	const token = req.cookies.token;
-
-	if (!token) {
-		return res.status(401).json({ message: "Unauthorized" });
-	}
-
-	try {
-		const decoded = jwt.verify(token, jwtSecret);
-		req.userId = decoded.userId;
+	if (req.session.userId) {
+		res.locals.isLoggedIn = true;
 		next();
-	} catch (error) {
-		res.status(401).json({ message: "Unauthorized" });
+	} else {
+		res.redirect("/admin");
 	}
 };
 
@@ -35,13 +35,15 @@ const logger = (req, res, next) => {
 	}
 };
 
-const setAdminLayout = (req, res, next) => {
+const setAdminLocals = (req, res, next) => {
 	res.locals.layout = constants.adminLayout;
+	res.locals.title = constants.localsTitleMap[req.path] || "Admin"
 	next();
 };
 
 module.exports = {
 	authMiddleware,
+	generateJwtAndSetCookie,
 	logger,
-	setAdminLayout,
+	setAdminLocals,
 };
