@@ -29,7 +29,7 @@
 			</li>
 			<li class="<%= isLoggedIn ? 'nav_item' : '' %>">
 				<a
-					href="/admin"
+					href="<%= isLoggedIn ? "/admin/dashboard" : "/admin" %>"
 					class=""
 					><%= isLoggedIn ? "Dashboard" : "Log In" %></a
 				>
@@ -39,7 +39,9 @@
 
 	<div class="header__button">
 		<% if (isLoggedIn) { %>
-		<button>Logout</button>
+		<a href="/admin/logout">
+      		Logout
+    	</a>
 		<% } else { %>
 		<button
 			id="searchBtn"
