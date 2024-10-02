@@ -1,8 +1,7 @@
 const express = require("express");
 
 const Post = require("../models/Post");
-const User = require("../models/User");
-const { authMiddleware, setAdminLayout } = require("../middleware");
+const { authMiddleware, setAdminLocals } = require("../middleware");
 const utils = require("../config/utils");
 
 const router = express.Router();
@@ -28,13 +27,9 @@ router.get("/detail/:id", async (req, res) => {
 });
 
 // GET / add-post
-router.get("/add-post", authMiddleware, setAdminLayout, async (req, res) => {
-	const locals = {
-		title: "Add Post",
-	};
-
+router.get("/add-post", authMiddleware, setAdminLocals, async (req, res) => {
 	try {
-		res.render("admin/add-post", { locals });
+		res.render("admin/add-post");
 	} catch (error) {
 		console.error("Add Post Error", error);
 	}
@@ -59,17 +54,11 @@ router.post("/add-post", authMiddleware, async (req, res) => {
 router.get(
 	"/edit-post/:id",
 	authMiddleware,
-	setAdminLayout,
+	setAdminLocals,
 	async (req, res) => {
 		try {
-			const locals = {
-				title: "Edit Post",
-			};
-
 			const data = await Post.findOne({ _id: req.params.id });
-
 			res.render("admin/edit-post", {
-				locals,
 				data,
 			});
 		} catch (error) {
@@ -95,19 +84,14 @@ router.put("/edit-post/:id", authMiddleware, async (req, res) => {
 });
 
 // DELETE / delete-post
-router.delete(
-	"/delete-post/:id",
-	authMiddleware,
-	setAdminLayout,
-	async (req, res) => {
-		try {
-			const postId = req.params.id;
-			await Post.deleteOne({ _id: postId });
-			res.redirect("/admin/dashboard");
-		} catch (error) {
-			console.error("Delete Post Error: ", error);
-		}
+router.delete("/delete-post/:id", authMiddleware, async (req, res) => {
+	try {
+		const postId = req.params.id;
+		await Post.deleteOne({ _id: postId });
+		res.redirect("/admin/dashboard");
+	} catch (error) {
+		console.error("Delete Post Error: ", error);
 	}
-);
+});
 
 module.exports = router;
