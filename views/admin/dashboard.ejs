@@ -1,28 +1,42 @@
-<div class="admin-title">
-	<h2>Posts</h2>
-	<a
-		href="/posts/add-post"
-		class="button"
-		>+ Add New</a
-	>
+<div class="admin-container">
+	<div class="admin-title">
+		<h2>Posts</h2>
+		<a
+			href="/posts/add-post"
+			class="button"
+		>
+			+ Add New Post
+		</a>
+	</div>
+	
+	<section class="admin_articles">
+		<% if (posts && Array.isArray(posts) && posts.length) { %>
+		<ul class="admin-posts">
+			<% posts.forEach((post, index) => { %>
+			<li class="<%= index % 2 === 0 ? 'post-background' : '' %>">
+				<a href="/posts/detail/<%= post._id %>"><%= post.title %></a>
+				<div class="admin-post-controls">
+					<a
+						href="/posts/edit-post/<%= post._id %>"
+						class="btn"
+					>
+						Edit
+					</a>
+					<%- include('../forms/_delete-post-form.ejs', { postId: post._id }) %>
+				</div>
+			</li>
+			<% }) %>
+		</ul>
+	
+		<% if (nextPage !== null) { %>
+		<a
+			href="/?page=<%= nextPage %>"
+			class="pagination"
+		>
+			&lt; View Older Posts
+		</a>
+		<% } %> <%} else { %>
+		<p class="empty_list">There' nothing here, create your first post!</p>
+		<% } %>
+	</section>
 </div>
-
-<% if (data && Array.isArray(data) && data.length) { %>
-<ul class="admin-posts">
-	<% data.forEach(post => { %>
-	<li>
-		<a href="/posts/detail/<%= post._id %>"> <%= post.title %> &nearr; </a>
-		<div class="admin-post-controls">
-			<a
-				href="/posts/edit-post/<%= post._id %>"
-				class="btn"
-				>Edit</a
-			>
-			<%- include('../forms/_delete-post-form.ejs', { postId: post._id }) %>
-		</div>
-	</li>
-	<% }) %>
-</ul>
-<%} else { %>
-<p class="empty_list">There' nothing here, create your first post!</p>
-<% } %>
