@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { getPaginatedPosts } = require("./utils");
 
 const Schema = mongoose.Schema;
 const PostSchema = new Schema({
@@ -21,5 +22,6 @@ const PostSchema = new Schema({
 });
 
 PostSchema.index({ title: "text", body: "text" });
+PostSchema.statics.getPaginatedPosts = getPaginatedPosts;
 
 module.exports = mongoose.model("Post", PostSchema);

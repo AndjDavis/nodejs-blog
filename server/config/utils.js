@@ -19,7 +19,7 @@ const useAdminLayout = (routerName) => {
 	return !!(isAdminRouter || isPostsRouter);
 };
 
-module.exports.getLayout = getLayout;
 module.exports.getBackRoute = getBackRoute;
+module.exports.getLayout = getLayout;
 module.exports.isActiveRoute = isActiveRoute;
 module.exports.useAdminLayout = useAdminLayout;
