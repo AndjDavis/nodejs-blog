@@ -1,13 +1,20 @@
 const express = require("express");
 
 const Post = require("../models/Post");
-const { authMiddleware, setAdminLocals } = require("../middleware");
 const utils = require("../config/utils");
+const constants = require("../config/constants");
+const {
+	authMiddleware,
+	identifyRouter,
+	setRouteLocals,
+} = require("../middleware");
 
 const router = express.Router();
+router.use(identifyRouter(constants.postsRouter));
 
+// TODO: How we handling this one?
 // GET / Post Detail
-router.get("/detail/:id", async (req, res) => {
+router.get("/detail/:id", setRouteLocals, async (req, res) => {
 	try {
 		const slug = req.params.id;
 		const data = await Post.findById({ _id: slug });
@@ -29,7 +36,7 @@ router.get("/detail/:id", async (req, res) => {
 router.use(authMiddleware);
 
 // GET / add-post
-router.get("/add-post", setAdminLocals, async (req, res) => {
+router.get("/add-post", setRouteLocals, async (req, res) => {
 	try {
 		res.render("admin/add-post");
 	} catch (error) {
@@ -53,7 +60,7 @@ router.post("/add-post", async (req, res) => {
 });
 
 // GET / edit-post
-router.get("/edit-post/:id", setAdminLocals, async (req, res) => {
+router.get("/edit-post/:id", setRouteLocals, async (req, res) => {
 	try {
 		const data = await Post.findOne({ _id: req.params.id });
 		res.render("admin/edit-post", {

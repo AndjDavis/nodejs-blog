@@ -9,7 +9,8 @@ const MongoStore = require("connect-mongo");
 
 const connectDB = require("./server/config/db");
 const { logger } = require("./server/middleware");
-const { mainLayout } = require("./server/config/constants");
+const constants = require("./server/config/constants");
+const utils = require("./server/config/utils");
 
 // Create the express application
 const app = express();
@@ -24,7 +25,7 @@ app.use(express.static("public"));
 // Templating Engine
 app.set("view engine", "ejs");
 app.use(expressLayout);
-app.set("layout", mainLayout);
+app.set("layout", constants.mainLayout);
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -50,8 +51,9 @@ app.use("/admin", require("./server/routes/admin"));
 app.use("/posts", require("./server/routes/posts"));
 
 // Default locals values
-app.locals.title = "NodeJS Blog";
+app.locals.isActiveRoute = utils.isActiveRoute;
 app.locals.description = "Simple blog created with NodeJS, Express, & MongoDB";
+app.locals.title = "NodeJS Blog";
 
 // Listen on PORT
 app.listen(PORT, () => {

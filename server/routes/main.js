@@ -1,11 +1,14 @@
 const express = require("express");
 const Post = require("../models/Post");
+const constants = require("../config/constants");
+const { identifyRouter, setRouteLocals } = require("../middleware");
 
 const router = express.Router(); // create a new instance of an Express Router object.
+router.use(identifyRouter(constants.mainRouter));
 
 // TODO: Copy pagination to dashboard, (create post list template)
 // GET / Home
-router.get("/", async (req, res) => {
+router.get("/", setRouteLocals, async (req, res) => {
 	try {
 		let perPage = 10;
 		let page = req.query.page || 1;
@@ -32,11 +35,7 @@ router.get("/", async (req, res) => {
 });
 
 // POST / SEARCH
-router.post("/search", async (req, res) => {
-	const locals = {
-		title: "Search Results",
-	};
-
+router.post("/search", setRouteLocals, async (req, res) => {
 	try {
 		const searchTerm = req.body?.searchTerm || "";
 		const cleanedSearchTerm = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
@@ -44,24 +43,20 @@ router.post("/search", async (req, res) => {
 			$text: { $search: cleanedSearchTerm },
 		});
 
-		res.render("search-results", { data, locals });
+		res.render("search-results", { data });
 	} catch (error) {
 		console.error("Searching Error: ", err);
 	}
 });
 
-router.get("/about", (req, res) => {
-	const locals = {
-		title: "About",
-	};
-	res.render("about", { locals });
+// GET / About
+router.get("/about", setRouteLocals, (req, res) => {
+	res.render("about");
 });
 
-router.get("/contact", (req, res) => {
-	const locals = {
-		title: "Contact",
-	};
-	res.render("contact", { locals });
+// GET / Contact
+router.get("/contact", setRouteLocals, (req, res) => {
+	res.render("contact");
 });
 
 module.exports = router;

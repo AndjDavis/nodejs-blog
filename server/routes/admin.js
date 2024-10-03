@@ -3,17 +3,20 @@ const bcrypt = require("bcrypt");
 
 const Post = require("../models/Post");
 const User = require("../models/User");
+const constants = require("../config/constants");
 const {
 	authMiddleware,
 	generateJwtAndSetCookie,
+	identifyRouter,
 	redirectIfLoggedIn,
-	setAdminLocals,
+	setRouteLocals,
 } = require("../middleware");
 
 const router = express.Router();
+router.use(identifyRouter(constants.adminRouter));
 
 // GET / Admin
-router.get("/", redirectIfLoggedIn, setAdminLocals, (req, res) => {
+router.get("/", redirectIfLoggedIn, setRouteLocals, (req, res) => {
 	try {
 		res.render("admin/index");
 	} catch (err) {
@@ -48,7 +51,7 @@ router.post(
 );
 
 // GET / Register
-router.get("/register", redirectIfLoggedIn, setAdminLocals, (req, res) => {
+router.get("/register", redirectIfLoggedIn, setRouteLocals, (req, res) => {
 	try {
 		res.render("admin/register");
 	} catch (error) {
@@ -87,7 +90,7 @@ router.post(
 router.use(authMiddleware);
 
 // GET / Dashboard
-router.get("/dashboard", setAdminLocals, async (req, res) => {
+router.get("/dashboard", setRouteLocals, async (req, res) => {
 	try {
 		const data = await Post.find();
 		res.render("admin/dashboard", { data });
@@ -96,6 +99,7 @@ router.get("/dashboard", setAdminLocals, async (req, res) => {
 	}
 });
 
+// TODO: This isn't working.
 // GET / Admin Logout
 router.get("/logout", (req, res) => {
 	res.clearCookie();
