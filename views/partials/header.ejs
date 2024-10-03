@@ -1,3 +1,5 @@
+<!-- TODO: Log In button text should switch to Dashboard if the user is logged in. -->
+
 <header class="header">
 	<a
 		href="/"
@@ -9,30 +11,34 @@
 			<li class="<%= isLoggedIn ? 'nav_item' : '' %>">
 				<a
 					href="/"
-					class=""
-					>Home</a
+					class="<%= isActiveRoute('/', currentRoute) %>"
 				>
+				Home
+				</a>
 			</li>
 			<li class="<%= isLoggedIn ? 'nav_item' : '' %>">
 				<a
 					href="/about"
-					class=""
-					>About</a
+					class="<%= isActiveRoute('/about', currentRoute) %>"
 				>
+				About
+				</a>
 			</li>
 			<li class="<%= isLoggedIn ? 'nav_item' : '' %>">
 				<a
 					href="/contact"
-					class=""
-					>Contact</a
+					class="<%= isActiveRoute('/contact', currentRoute) %>"
 				>
+				Contact
+				</a>
 			</li>
 			<li class="<%= isLoggedIn ? 'nav_item' : '' %>">
 				<a
 					href="<%= isLoggedIn ? "/admin/dashboard" : "/admin" %>"
-					class=""
-					><%= isLoggedIn ? "Dashboard" : "Log In" %></a
+					class="<%= isActiveRoute(isLoggedIn ? '/admin/dashboard' : '/admin', currentRoute) %>"
 				>
+					<%= isLoggedIn ? "Dashboard" : "Log In" %>
+				</a>
 			</li>
 		</ul>
 	</nav>

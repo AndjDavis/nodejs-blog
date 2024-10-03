@@ -5,9 +5,14 @@ const getLayout = (referer) => {
 	return isAdmin ? constants.adminLayout : constants.mainLayout;
 };
 
+const useAdminLayout = (routerName) => {
+	const isAdminRouter = routerName === constants.adminRouter;
+	const isPostsRouter = routerName === constants.postsRouter;
+	return !!(isAdminRouter || isPostsRouter);
+};
+
 const getBackRoute = (referer) => {
 	const isAdmin = referer && referer.endsWith("/admin/dashboard");
-	console.log("Get Back Route", isAdmin);
 	return isAdmin ? "/admin/dashboard" : "/";
 };
 
@@ -17,3 +22,4 @@ const isActiveRoute = (route, currentRoute) =>
 module.exports.getLayout = getLayout;
 module.exports.getBackRoute = getBackRoute;
 module.exports.isActiveRoute = isActiveRoute;
+module.exports.useAdminLayout = useAdminLayout;
