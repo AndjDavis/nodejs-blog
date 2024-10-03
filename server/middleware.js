@@ -6,7 +6,6 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const authMiddleware = (req, res, next) => {
 	if (req.session.userId) {
-		res.locals.isLoggedIn = true;
 		next();
 	} else {
 		res.redirect("/admin");

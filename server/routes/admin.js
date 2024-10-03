@@ -102,9 +102,15 @@ router.get("/dashboard", setRouteLocals, async (req, res) => {
 // TODO: This isn't working.
 // GET / Admin Logout
 router.get("/logout", (req, res) => {
-	res.clearCookie();
-	req.session.destroy(); // Destroy the session
-	res.redirect("/");
+	res.clearCookie("token", { httpOnly: true });
+	req.session.destroy((err) => {
+		if (err) {
+			console.error("Session destroy error: ", err);
+			return res.status(500).send("Error occurred while logging out");
+		} else {
+			res.redirect("/");
+		}
+	}); // Destroy the session
 });
 
 module.exports = router;
