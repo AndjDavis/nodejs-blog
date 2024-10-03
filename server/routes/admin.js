@@ -92,8 +92,17 @@ router.use(authMiddleware);
 // GET / Dashboard
 router.get("/dashboard", setRouteLocals, async (req, res) => {
 	try {
-		const data = await Post.find();
-		res.render("admin/dashboard", { data });
+		const postsPerPage = 8;
+		const currentPage = req.query.page || 1;
+		const { posts, page, nextPageDisplay } = await Post.getPaginatedPosts(
+			currentPage,
+			postsPerPage
+		);
+		res.render("admin/dashboard", {
+			posts,
+			current: page,
+			nextPage: nextPageDisplay,
+		});
 	} catch (error) {
 		console.error("Dashboard Error: ", error);
 	}
